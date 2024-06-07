@@ -394,3 +394,408 @@ const movies = [
 //output
 The Dark Knight
 ```
+
+## Object methods
+
+To call the keys we have a syntax as:
+
+```js
+let salaries = {
+  name: "ravi",
+  age: 23,
+  gender: "M",
+};
+Object.keys(salaries);
+var e = Object.keys(salaries);
+console.log(e);
+//Output
+["name", "age", "gender"];
+```
+
+To call the value we have a syntax as:
+
+```js
+let salaries = {
+  name: "ravi",
+  age: 23,
+  gender: "M",
+};
+Object.values(salaries);
+var e = Object.values(salaries);
+console.log(e);
+//Output
+["ravi", 23, "M"];
+```
+
+## Trick Commands
+
+ctrl+shift+p -> It opens all the commands(It is similar to a command pallete)
+
+ctrl+ space -> auto complete
+
+ctrl + click -> It redirects to the particular declaration.
+
+## Template Literals
+
+Interpolation Substitution : It makes our code more readable compared to the normal code method.
+
+Without Interpolation substitution
+
+```js
+var movieUrl = (domain, genre, year) =>
+  "http://" + domain + "?genere=" + genre + "&year=" + year;
+
+console.log(movieUrl("imdb.com", "thriller", 2020));
+```
+
+With Interpolation substitution
+
+```js
+var movieUrl = (domain, genre, year) =>
+  `http:// ${domain}?genere=${genre}&year= ${year}`;
+
+console.log(movieUrl("imdb.com", "thriller", 2020));
+```
+
+In General JS doesnt support multiline execution.But it can be doneusing BACKTICKS.
+
+```js
+- ` ` -> These are back ticks
+var e=`It makes our code more readable compared to the normal code method.`;
+// This works
+
+var t="It makes our code more readable compared to the normal code method.";
+//This doesnt work
+```
+
+> Refactoring: It is similar to cleaning our room. Quality better & with the same functionality.
+
+## Destructuring
+
+- Array destructuring
+  Destructuring stands for unpacking
+
+  ```js
+  var [t1, t2] = [100, 200];
+  console.log(t1, t2);
+  //output
+  100 200
+
+  var [t1,t2,t3]=[100,200];
+   console.log(t1,t2,t3)
+  //output
+  100 200 undefined
+
+  var [t1,t2,t3=80]=[100,200];
+  console.log(t1,t2,t3)
+  //here t3=80 is called as default value
+  //output
+  100 200 80
+  ```
+
+> The default value is only taken when t3 is undefined
+
+```js
+var [t1,t2,t3=80]=[100,200,500];
+console.log(t1,t2,t3)
+//output
+100 200 500
+
+var [t1,t2,t3=80]=[100,200,undefined];
+console.log(t1,t2,t3)
+//output
+100 200 80
+
+var [,t1,t2,t3=80]=[100,200,undefined];
+console.log(t1,t2,t3) //output
+200 undefined 80
+```
+
+> > This method is used to skip the values.This concept is called HOLES
+
+```js
+var [, , t1, t2, t3 = 80] = [100, 200, undefined];
+console.log(t1, t2, t3); //undefined undefined 80
+```
+
+## Object destructuring
+
+> The default value can be anything..number,object,etc..
+
+- The object destructuring works on key-value based rather than the indexing.
+
+```js
+const {name,networth,power}={
+  name:"Tony"
+  house:🤠
+  networth:🤑🤑🤑
+  power:🦾
+
+};
+console.log(name);
+console.log(networth);
+console.log(power);
+//output
+
+Tony
+🤑🤑🤑
+🦾
+```
+
+> > The unpacking in array is done by indexing and the unpacking in Objects is done by Key considerations.
+
+## The task1 code with refactoring by using object destruction
+
+```js
+const cart = [
+  { name: "apple", price: 0.5, quantity: 4 },
+  { name: "banana", price: 0.25, quantity: 6 },
+];
+
+const newItems = [
+  { name: "Cherry", price: 0.75, quantity: 5 },
+  { name: "Date", price: 1, quantity: 3 },
+];
+
+//   Ex 1.1: Combine cart + newItems
+const comb = [...cart, ...newItems];
+
+var result = 0;
+for (let { price, quantity } of comb) {
+  result = r price * quantity;
+}
+console.log("The Total Price of all fruits : " + result);
+//output
+10.25;
+```
+
+## ES features
+
+> > Unary operator : ++,--,!
+> > binary operator : 2+5, 6-2, 9\*7 7/2
+
+# Code snippets
+
+# Truthy vs falsy
+
+```js
+let x = [];
+if (x) {
+  console.log("Hey");
+} else {
+  console.log("NOpe");
+}
+//output
+Hey;
+```
+
+```js
+let x = [null];
+if (x) {
+  console.log("Hey");
+} else {
+  console.log("NOpe");
+}
+//output
+Hey;
+```
+
+```js
+let x = null;
+if (x) {
+  console.log("Hey");
+} else {
+  console.log("NOpe");
+}
+//output
+Nope;
+```
+
+Logical OR
+
+```js
+var height = 150;
+var final = 140 || height;
+console.log(final);
+//output
+140;
+//In logical OR if one /first value is true then it doen't check nxt one.
+```
+
+```js
+var avgtemp = 20;
+var temp = 0 || avgtemp;
+console.log(temp);
+//output
+20;
+//falsy values are followed here
+```
+
+> ?? - this only considers null and undefined as falsy remaining all are true.
+
+```js
+var avgtemp = 20;
+var temp = 0 ?? avgtemp;
+console.log(temp);
+//output
+0;
+//for null and undefined falsy table is followed
+```
+
+# Coding standards
+
+> Coding standards : Are ment to have uniformity throughout our code base
+
+> Code quality
+
+> DRY
+
+# Variables name
+
+- Understandable/descriptive
+
+```js
+let a=50 ❌
+let age=50 ✅
+```
+
+- camelCase
+
+```js
+let studentname="Teja" ❌
+let studentName="Teja"  ✅
+```
+
+- choose 'let' over 'var' ,'const' over 'let'
+
+````js
+let aadharno= 87654387654;❌
+const aadharno= 87654387654; ✅
+// coz aadhar is constant and doesnt change.
+## Errors ( For variable name )
+
+- Reserved keywords('if','for')
+```js
+let if="teja"; ❌
+````
+
+- Cannot start with numbers
+
+```js
+let 2ilu = "Teja"; ❌
+```
+
+- Cannot have special symbols except("\_")
+
+```js
+let abc$123= "avram";❌
+let abc_123= "avram";✅
+```
+
+![alt text](image-1.png)
+
+## Documentation
+
+Single comment
+
+```js
+//
+```
+
+Multiple comment
+
+```js
+/*
+
+*/
+```
+
+```js
+/**
+ *
+ *
+ *
+ * /
+ *
+```
+
+```js
+/**
+ * Multiplies two numbers.
+ * @param {number} x - The first number.
+ * @param {number} y - The second number.
+ * @returns {number} The product of x and y.
+ * @example
+ * multiply(2, 3); // returns 6
+ */
+function multiply(x, y) {
+  return x * y;
+}
+*/
+```
+
+> > This is called jsdoc
+
+```js
+// Write a function to make it uppercase.
+/**
+ *@param {string} name
+ *@returns (string)
+ *@example
+ *toupper("Tejaswini");
+ */
+function toupper(name) {
+  return name.toUpperCase();
+}
+```
+
+```js
+/**
+ *
+ * @param {*} name
+ * @returns
+ */
+function toupper(name) {
+  return name.toUpperCase();
+}
+//This structure works only above the function.
+```
+
+- ESlint is used to enforce the coding standards.
+
+# CSS
+
+![alt text](MicrosoftTeams-image.png)
+
+Why we dont prefer inline . coz we dont want to make all combined and get confused. It doesn't gives the seperation of concern.
+
+link tag for external css.
+
+## The external CSS is always prefered.
+
+## In some scenarios the internal css is given most preference coz to load the basic css of a page.
+
+![alt text](image-2.png)
+
+font - style --> type of the font italic or bold ...
+
+1px == one dot on the screen
+
+RGB
+#cd5c5c
+|
+
+|
+
+|
+R G B
+
+cd 5c 5c
+
+HSL - saturation light
+
+### over system can support good colors but the web doesn't support thatt good quality of colors.
+
+![alt text](image-3.png)
+
+![](image-4.png)
