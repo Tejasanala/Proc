@@ -36,8 +36,9 @@ What OS in cloud?
   The most used OS is linux accross the world.
 
 Advantages of linux:
-ditross: we r using is alpine
+ditross: we r using is alpine linux it is just 256mb
 ![alt text](image-6.png)
+the above r few destross used
 
 - Free
 - open source(linux is used my manyyyyy people like google,amazon etccc so if any bug is found then it can be modified by any developer coz their company system will be crashed .so they will develop / correct the bug.)
@@ -52,8 +53,8 @@ More strong cpu can accomadate many people.
 
 Two types of scaling :
 
-- vertical
-- horizontal
+- vertical:upgrading the processes
+- horizontal:
 
 ![alt text](image-7.png)
 
@@ -67,7 +68,7 @@ Here the upscaling and down scaling is available.
 
 we pay as much as required.
 
-when load becomes morethan 80% then it adds another pc.
+when load becomes morethan 80% then it adds another pc.it load becomes lessthan 40%  ten remove a pc.
 ![](image-10.png)
 
 How we get bankrupted ?
@@ -118,3 +119,4 @@ Soooo...to makes things faster we use a ssd instead of harddisk.
 The above are the relational databases.
 
 ![alt text](image-18.png)
+redis is used onthe top of a relational sql.For example if we use mysql redis is uesd on top.

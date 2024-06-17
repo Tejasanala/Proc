@@ -346,7 +346,120 @@ GROUP BY director;
 
 ![alt text](image-53.png)
 
----
+Exercise 13 — Tasks
+
+Add the studio's new production, Toy Story 4 to the list of movies (you can use any director) ✓
+
+```sql
+Insert into Movies(title,director) values("Toy Story 4","John Lasseter");
+
+```
+
+Toy Story 4 has been released to critical acclaim! It had a rating of 8.7, and made 340 million domestically and 270 million internationally. Add the record to the BoxOffice table.
+
+```sql
+Insert into Boxoffice(movie_id,Rating,Domestic_sales,International_sales)values(15,8.7,340000000,270000000);
+```
+
+![alt text](image-54.png)
+
+Exercise 14 — Tasks
+
+The director for A Bugs Life is incorrect, it was actually directed by John Lasseter ✓
+
+```sql
+update movies
+set Director="John Lasseter"
+where Title="A Bugs Life";
+```
+
+The year that Toy Story 2 was released is incorrect, it was actually released in 1999
+
+```sql
+update movies
+set Year= 1999
+where Title="Toy Story 2";
+```
+
+Both the title and director for Toy Story 8 is incorrect! The title should be "Toy Story 3" and it was directed by Lee Unkrich
+
+```sql
+UPDATE movies
+SET title = "Toy Story 3", director = "Lee Unkrich"
+WHERE id = 11;
+```
+
+![alt text](image-55.png)
+
+Exercise 15 — Tasks
+
+This database is getting too big, lets remove all movies that were released before 2005. ✓
+
+```sql
+Delete from movies
+where Year<2005;
+```
+
+Andrew Stanton has also left the studio, so please remove all movies directed by him.
+
+```sql
+Delete from movies
+where director="Andrew Stanton";
+```
+
+![alt text](image-56.png)
+
+Exercise 16 — Tasks
+Create a new table named Database with the following columns:
+– Name A string (text) describing the name of the database
+– Version A number (floating point) of the latest version of this database
+– Download_count An integer count of the number of times this database was downloaded
+This table has no constraints.
+
+```sql
+CREATE TABLE Database (
+    Name Text,
+    Version Float,
+    Download_count Integer
+);
+```
+
+![](image-57.png)
+
+Exercise 17 — Tasks
+Add a column named Aspect_ratio with a FLOAT data type to store the aspect-ratio each movie was released in. ✓
+
+```sql
+Alter table movies
+add Aspect_ratio FLOAT;
+```
+
+Add another column named Language with a TEXT data type to store the language that the movie was released in. Ensure that the default for this language is English.
+
+```sql
+Alter table movies
+add Language TEXT
+Default  English;
+```
+
+![alt text](image-58.png)
+
+Exercise 18 — Tasks
+
+We've sadly reached the end of our lessons, lets clean up by removing the Movies table ✓
+
+```sql
+drop table movies;
+```
+
+And drop the BoxOffice table as well
+drop table movies;
+
+```sql
+drop table boxoffice;
+```
+
+![alt text](image-59.png)
 
 ## Why joins?
 
@@ -431,7 +544,7 @@ or
 
 ### BCNF
 
-every attribute in the table should depend on the key(primary key),the whole key.
+every attribute in the table should depend on the key(primary key),the whole key.(The primary key should also depend on primary key).
 
 question:
 ![alt text](image-42.png)
@@ -439,9 +552,13 @@ question:
 answer:
 ![alt text](image-41.png)
 
+Player skill level is updated once and it will be directly updated.
+
 ### JOINS
 
 #### Why joins?
+
+- for safety to access
 
 ![alt text](image-43.png)
 
@@ -470,3 +587,270 @@ after the inner join all the values comes.
 ## Full join
 
 ![alt text](image-47.png)
+
+## Aggregate functions
+
+## All the people are most intrested in The aggregate functions coz (in real world the <big> Dashboard</big> uses the aggregate which shows all the stats in that one page. )
+
+- After groupby filtering is done by having clause.
+
+- if we are changing the coloumn names then we mention that names
+- if we r inserting in the same order given then no need to mention the coloumn names.
+
+## DataTypes
+
+- integer - for whole numbers
+- boolean - for true or false
+- float - it stores 3 precision values
+- double - it stores 6 precision values
+- real - 12bvalues
+
+- charecter(num_chars) - it can store few charecters
+- Varchar(num_chars) - it can store them like a sentence.
+
+- text - it stores paragraphs
+  instead of text we can use nvarchar(max) or varchar(max)
+- date,datetime
+- BLOB - To store binary data we use blob. The binary data includes(images,videos)- this is not recommended.
+
+we will store the images by the path we r using.
+
+![alt text](image-60.png)
+
+### Forign key constrain
+
+- first we should delete the foriegn key table and later we should remove the orginal table.
+
+- if we try to delete the primary key table directly then the info in other table becomes ghoost data.
+
+![alt text](image-61.png)
+
+#### Actual datatypes available in our sql server
+
+![alt text](image-62.png)
+
+Varchar -
+
+nVarChar - It is more easy to calculate. It supports multiple languages,symbols,and special charecters.
+
+![alt text](image-63.png)
+varchar stores a letters/emojis into 2 or more unicodes.
+
+![alt text](image-64.png)
+
+we used varchar(max) once upon a time to store more info. Now we are using <b>text</b>.
+
+![alt text](image-65.png)
+
+Decimal will be exact .(performance low)
+Float will be approx which causes loss of information sometimes.(performance high)
+
+use database name;// redirecting the databases.
+
+### String functions:
+
+- len
+
+```sql
+select len('teja') as namelength;
+--4
+```
+
+-left
+
+```sql
+select left('teja','2') as namelength;
+--te
+```
+
+- right
+
+```sql
+select right('teja','2') as namelength;
+--ja
+```
+
+- substring
+
+```sql
+select substring('tejaswinisanala ',1,7) as namelength;
+--tejaswi
+```
+
+- uppercase
+
+```sql
+select upper('teja') as namelength;
+--TEJA
+```
+
+- lowercase
+
+```sql
+select lower('tEjA') as namelength;
+--teja
+```
+
+- trim
+
+```sql
+select trim('                                                     tejaswinisanala                     ') as namelength;
+--tejaswinisanala
+```
+
+> It trims the extra space .
+
+- Ltrim
+
+```sql
+select Ltrim('                       tejaswinisanala                     ') as namelength;
+--tejaswinisanala
+```
+
+- Rtrim
+
+```sql
+select Rtrim('                       tejaswinisanala                     ') as namelength;
+--                       tejaswinisanala
+```
+
+- CharIndex
+
+```sql
+select CharIndex('e','tejaswinisanala') as namelength;
+-- 2
+
+select CharIndex('r','tejaswinisanala') as namelength;
+--0
+select CharIndex('E','tejaswinisanala') as namelength;
+--2
+```
+
+- Replace
+
+```sql
+select Replace('tejaswinisanala','a','r') as namelength;
+--tejrswinisrnrlr
+```
+
+- Concat
+
+```sql
+select Concat('tejaswinisanala','manaswini') as namelength;
+--tejaswinisanalamanaswini
+```
+
+- Replicate
+
+```sql
+select Replicate('tejaswinisanala ','3') as namelength;
+--tejaswinisanala tejaswinisanala tejaswinisanala
+```
+
+- reverse
+
+```sql
+select Reverse('tejaswinisanala') as namelength;
+--alanasiniwsajet
+```
+
+### Mathematical Function
+
+- Abs
+
+```sql
+select abs(-190987);
+--190987
+```
+
+- power
+
+```sql
+select power(2,5);
+--32
+```
+
+- Round
+
+```sql
+select Round(10.5675,2);
+--10.5700
+```
+
+- Ceiling
+
+```sql
+select Ceiling(10.5);
+--11
+```
+
+- floor
+
+```sql
+select floor(10.9);
+--10
+```
+
+### Date functions
+
+- GetDate
+
+```sql
+select GETDATE() as today
+--2024-06-13 12:54:13.153
+```
+
+- DateAdd
+
+```sql
+--It returns the date after specific days
+select dateadd(day,10,getdate())
+--2024-06-23 12:58:04.357
+```
+
+- DateDiff
+
+```sql
+-- It returns the difference between the dates
+select datediff(day,'2024-6-25','2024-10-27');
+--124(days)
+select datediff(hour,'2024-6-25','2024-10-27');
+--2976(hours)
+```
+
+- Format
+
+```sql
+--There are many formats available in docx microsoft
+select Format(GETDATE(), 'dd MM yyyy');
+-- 13 06 2024
+```
+
+- DatePart(Extract the part from te date)
+
+```sql
+ --extracting a certain part from the date i.e like date ,month....
+
+select datepart(month,getdate())--6
+select datepart(day,getdate())--13
+```
+
+### Corelated sub query : reference with the outside query for inside query.
+
+![alt text](image-67.png)
+
+Compared to subqueries...join are much easy to understand.
+but sub queries provide more readablity compared to joins.
+
+## Multi join tables
+
+![alt text](image-68.png)
+
+![alt text](image-69.png)
+
+![alt text](image-70.png)
+
+### Grouping sets
+
+> Used to combine multiple grouping select statements.
+> ![alt text](image-71.png)
