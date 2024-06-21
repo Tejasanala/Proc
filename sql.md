@@ -854,3 +854,142 @@ but sub queries provide more readablity compared to joins.
 
 > Used to combine multiple grouping select statements.
 > ![alt text](image-71.png)
+
+![alt text](image-72.png)
+Union all - it will be adding
+
+![](image-73.png)
+instead of writing multiple select stmts we can use grouping sets.
+
+```sql
+select region,product_type,sum(sales_amount) from sales_data
+group by GROUPING SETS(
+            (region),
+			(product_type),
+		   (region,product_type)
+		   );
+
+select region,product_type,sum(sales_amount) from sales_data
+group by GROUPING SETS(
+		   (region,product_type)
+		   );
+```
+
+> > If we put () in grouping sets then we get the sum of all the values.
+> > grouping sets gives the flexibility to choose required attributes as a group.
+
+We have two types:
+
+- Rollup :it will be giving the values in a particular order.
+  ![alt text](image-74.png)
+- Cube : It will give the all possible combinations.
+  ![alt text](image-75.png)
+
+- rollupSimilar to if we gave n coloumns then the possible combinations are n+1.
+
+- Cube we get 2power n combinations.
+
+we choose rollup and cube when we want all combinations. we use grouping sets when we are specific with particular combinations.
+
+Who do we rank ?
+
+We use ranking functions
+![alt text](image-76.png)
+
+```sql
+select region,product_type,sales_amount,Rank() OVER(Order by sales_amount desc) as Rankvalue
+from sales_data
+```
+
+![alt text](image-77.png)
+
+we can also partion the rank based on our requirement i.e base4d on region or product_type.
+
+## Common table expression(CTE)
+
+```sql
+WITH Sales_CTE
+AS
+(
+select  region,product_type,sum(sales_amount) as Totalsales,
+Dense_Rank() OVER (Partition by region order by sum(sales_amount) desc) as densevalue from sales_data
+group by region,product_type
+)
+SELECT * FROM Sales_CTE
+where densevalue=1;
+```
+
+![alt text](image-78.png)
+
+we should be imagining that as a new table and perform operations on it.
+
+### How to work on running totals.
+
+| TransactionID | Date       | ProductName | Category    | Price | StoreName     | City          | Country |
+| ------------- | ---------- | ----------- | ----------- | ----- | ------------- | ------------- | ------- |
+| 1             | 2024-04-01 | Laptop      | Electronics | 1200  | TechWorld     | San Francisco | USA     |
+| 2             | 2024-04-01 | Smartphone  | Electronics | 800   | TechWorld     | San Francisco | USA     |
+| 3             | 2024-04-02 | Jeans       | Apparel     | 40    | FashionFiesta | New York      | USA     |
+
+### ER diagrams
+
+![alt text](<MicrosoftTeams-image (1).png>)
+
+---
+
+![alt text](image-79.png)
+
+### Sql cross join
+
+![alt text](image-82.png)
+
+![alt text](image-83.png)
+
+Cant use these in sql server.
+
+Naturaljoin:
+
+- no need to mention the condition.
+  ![alt text](image-84.png)
+
+The above is the syntax.
+
+Equi JOIN:
+
+- Must mention the condition
+- the condition is always '='
+  ![alt text](image-85.png)
+
+natural vs equi:
+
+- No syntax for both of them.
+  ![alt text](image-86.png)
+
+not only "=" we can mention anything in inner join .(which is not in equi join)
+
+example(db)-cast and convert
+
+```sql
+select *,dbo.CalculateAge([Year]) as Age from movies
+order by Age desc
+offset 3 rows
+fetch next 3 rows only;--syntax for offset and fetch in  and sql server.
+```
+
+## View
+
+```sql
+Create View vWLastdecade
+As
+select MovieId,Title,[Year] from movies
+where [year] Between 2010 and 2020
+
+
+select * from vWLastDecade;
+```
+
+- the view is a copy...and a virtual table.
+- Whenever we try execute 'select \* from vWLastDecade;' then it directly executes the created view table which only retrives this decade info.
+- for the complex statements ..to make them easy we create views soo it is easily readable.
+- Abstraction(hiding the complex info)
+- data integrity(we can put the orginaltable confidential and only give limited info in the view)
