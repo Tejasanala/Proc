@@ -992,4 +992,150 @@ select * from vWLastDecade;
 - Whenever we try execute 'select \* from vWLastDecade;' then it directly executes the created view table which only retrives this decade info.
 - for the complex statements ..to make them easy we create views soo it is easily readable.
 - Abstraction(hiding the complex info)
-- data integrity(we can put the orginaltable confidential and only give limited info in the view)
+- data security(we can put the orginaltable confidential and only give limited info in the view)
+
+- we cant do dml commands in functions so we use store procedures.
+
+## Stored Procedures
+
+![alt text](image-88.png)
+
+```sql
+-- Stored Procedures
+Declare @OrderAmount Decimal(10, 2) = 1500.00
+
+If @OrderAmount > 1000
+Begin
+	Print 'Applying 10% discount'
+End
+Else
+Begin
+	Print 'No Discount'
+End
+```
+
+![alt text](image-89.png)
+
+```sql
+Declare @Counter Int = 10
+
+While @Counter > 0
+Begin
+	Print @Counter
+	Set @Counter = @Counter - 1
+End
+```
+
+![alt text](image-90.png)
+
+![alt text](image-91.png)
+
+![alt text](image-92.png)
+
+mentioning the letters sp is called 'convention'.
+
+- the inbuilt stored procedures are represented as sp_procedurename.
+  ![alt text](image-93.png)
+
+The default procedure
+
+- sp_helptext returns the text inside the function.
+
+source procedure executes the program line by line.
+In subquery we cant use them.
+
+---other example
+![alt text](image-94.png)
+functions declaration (another method)
+
+## Scalar Function
+
+scalar function is used as a parameter in the coloumn name.
+
+- it returns only 1 value.
+
+- ITVF doesnt need begin and end.
+- we write evry thing in the return stmt
+
+Multi statement is done with the modification on the new created table.
+
+## 24-06-2024
+
+Why we choose no sql database?
+
+- they are fast retrival and storing of the information.
+
+![alt text](image-95.png)
+guy - sql
+
+girl(Manu example)- no sql
+![alt text](image-96.png)
+
+in general in real world.. it should be more on retriving than storing info coz we will just see the reels or shorts i.e retrieval
+
+- SQL is average in both storing and inserting.
+
+There is a way to improve the reading speed in SQL.
+
+## Indexing
+
+- Tables will be indexing by primary key.
+
+- We will group the indexes.
+  ![alt text](image-97.png)
+  in this above process the searching and number of checks would be easy.This is called clustered index.
+
+The grouping of the numbers is done by indexing.
+
+Table scan - for non primary keys
+
+dis:
+
+- the more we insert the slow retrevial we get.but the insertion or reading will be faster
+
+Is there any database that provides better insertion and retrival?
+
+- Its all about compromising.
+
+![alt text](image-98.png)
+If we dont have indexing then it will scan everything. i.e "Table Scan"
+
+6th line in the above image is the no: of lines executed.
+(i.e 1000000)
+![alt text](image-99.png)
+
+## We created the index
+
+![alt text](image-100.png)
+
+- The clustered index decides the table order.
+- clustered (pk)
+- nonclustered (non pk)
+
+for creating a nonclustering indexes.
+
+```sql
+CREATE NONCLUSTERED INDEX naming_index
+ON employees ([name])
+```
+
+The reterival of the name is improved by using this.
+
+![alt text](image-101.png)
+
+- see the execution time for the above email.
+
+![alt text](image-102.png)
+
+- see the execution time for the above name.
+
+The backend work for the above nonclustered index
+![alt text](image-103.png)
+
+the cluster first sorts name wise and then compares with the clustered ones .
+
+so becoz of this the no of lines execution reduced.
+
+dis:
+
+whenever we do an insert we r rebuilding the table again.

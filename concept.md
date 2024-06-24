@@ -1,6 +1,6 @@
 list has default padding
 border doesnt inherit the parent qualities.the border applied to parent doesnt effect the children.
-ctrl+shift+p -->gets emmet we need to put wrap .
+ctrl+shift+p -->gets emmet we need to put wrap.
 
 - the paragraph tag uses a block display so they prints in new lines.Whereas the anchor tag (a) are inline so.. everything come in the same line.
 
@@ -68,7 +68,7 @@ Here the upscaling and down scaling is available.
 
 we pay as much as required.
 
-when load becomes morethan 80% then it adds another pc.it load becomes lessthan 40%  ten remove a pc.
+when load becomes morethan 80% then it adds another pc.it load becomes lessthan 40% ten remove a pc.
 ![](image-10.png)
 
 How we get bankrupted ?
