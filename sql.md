@@ -1132,10 +1132,209 @@ The reterival of the name is improved by using this.
 The backend work for the above nonclustered index
 ![alt text](image-103.png)
 
-the cluster first sorts name wise and then compares with the clustered ones .
+- a table is created ordered in alpabetical wise.
+  the cluster first sorts name wise and then compares with the clustered ones .
 
 so becoz of this the no of lines execution reduced.
 
 dis:
 
 whenever we do an insert we r rebuilding the table again.
+
+steps:(when using non clustering )
+
+- noncluster index match
+- clustering(with the pk once) Here we do clustered search
+  ![alt text](image-107.png)
+  The above is the clustered search.
+
+- then we compare and retrive the information.
+
+if we have 2 non cluster indexes then we need to make 3 deletions.
+i.e n+1 deletions.
+
+![alt text](image-104.png)
+
+- The above is the example for deleting a record called 'Divya'.
+
+deleting near multiple places takes place i.e in many nonclustering indexes.
+
+```sql
+Exec sp_helpindex Employees
+```
+
+> We can see the available indexes by using the above command.
+
+![alt text](image-105.png)
+
+To do a delete on primary key index .we need to delete the primary key constraint first.
+
+![alt text](image-106.png)
+By default our primary key coloumn comes more fast for retrival
+
+## ACID properties.
+
+The Transactions are written inside the stored procedures.
+
+### Atomicity:
+
+![alt text](image-108.png)
+
+Either all the transactions should pass or all should fail.
+
+### Consistency:
+
+- whenever some money is debited in our account .It has to be credited in some other account .This is called consistency.
+
+![alt text](image-109.png)
+
+### Isolation:
+
+- the tranaction should be independent and should happen without interference.
+
+![alt text](image-110.png)
+
+when ever 2pepole r booking a ticket at same time the seat will be locked during that time and gives successfully done to one person and failed to another person.
+
+### Durability
+
+- It mostly happens during powerfailure
+
+- the transaction has completed execution, the updates and modifications to the database are stored in and written to disk and they persist even if a system failure occurs. These updates now become permanent and are stored in non-volatile memory.
+- If power failure occurs we perform roll back
+
+Examples on ACID properties:
+![alt text](image-111.png)
+For isolation:
+
+- The transaction is not commited yet.
+- if user1 is making any edit related to prabhas ..and and the mean time if user2 is trying to access info related to prabhas then it will be executing for more time.
+- apart from prabhas all others info will work.
+- To make it accessible to everyone we need to commit the transaction.
+
+![alt text](image-112.png)
+
+- Its giving a executing query more time.
+
+- So..to overcome this we need to 'Commit Transaction'.
+
+![alt text](image-113.png)
+
+- After commiting....we got these updation.
+
+## Altering the source procedure:
+
+![alt text](image-114.png)
+
+we modify with create,update,alter.
+
+> > Creating a procedure and applying operations.
+
+```sql
+Go
+CREATE PROCEDURE spActorChangeoftitle
+ @Firstname Varchar(30) , @Actorid int
+ AS
+SELECT  * from Actors;
+
+BEGIN TRY
+    Begin Transaction
+	Update Actors
+    set Firstname=@Firstname
+    where Actorid=@Actorid
+	commit Transaction
+END TRY
+BEGIN CATCH
+     Rollback;
+END CATCH;
+Go
+EXECUTE spActorChangeoftitle 'Rishika',10;
+
+--The Go is to Batch set of SQL Commands.
+```
+
+//
+example:
+
+![alt text](image-115.png)
+![alt text](image-116.png)
+![alt text](image-117.png)
+\\
+
+The aggregation functions we have are:
+
+ERROR_NUMBER(),
+ERROR_STATE(),
+ERROR_SEVERITY(),
+ERROR_LINE(),
+ERROR_PROCEDURE(),
+ERROR_MESSAGE(),
+
+error_message()
+
+- prints that particular error message.
+
+![alt text](image-118.png)
+to print them ...we declare these to a variable
+
+```sql
+DECLARE @Message varchar(MAX) = ERROR_MESSAGE(),
+        @Severity int = ERROR_SEVERITY(),
+        @State smallint = ERROR_STATE()
+```
+
+and then raise the error.
+
+```sql
+ RAISEERROR (@Message, @Severity, @State)
+```
+
+Value in the throw represents color coding....i.e specifying the range.
+
+## Filter indexing
+
+- Using same filter again and again.
+  ![alt text](image-119.png)
+
+#### We can also disable a particular index by
+
+```sql
+Alter Index IX_Filtered_Year on Movies Disable;
+-- The disabling of the index is done for checking the performance and comparing.
+
+```
+
+#### To enable the index again we use rebuild.
+
+```sql
+Alter Index IX_Filtered_Year on Movies Rebuild;
+```
+
+### To Rename the index
+
+![alt text](image-120.png)
+sp_rename - To modify coloumns etc....
+
+### COALESCE
+
+![alt text](image-121.png)
+
+```sql
+--system info functions
+
+select db_name() as currentdatabase;--returns the current database
+select @@Version as SQLServerVersion;--returns the present version of the sql.
+
+select @@Servicename as servicename;--returns in which registary is our sql server working on.
+
+select session_user as currentsessionuser;
+![alt text](image-122.png)
+select system_user as systemusername;--returns the name of the user.
+```
+
+## User defined datatypes
+
+To create a user-defined datatype .we use the normal existing datatypes.
+
+![alt text](image-123.png)
+we can also create user defined datatypes as primarykey.
