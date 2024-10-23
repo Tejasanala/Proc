@@ -658,7 +658,7 @@ console.log(temp);
 let a=50 ❌
 let age=50 ✅
 ```
-
+- pascal case : CLass(classes follow this)
 - camelCase
 
 ```js

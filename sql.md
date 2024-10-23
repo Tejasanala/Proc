@@ -1159,6 +1159,12 @@ i.e n+1 deletions.
 
 deleting near multiple places takes place i.e in many nonclustering indexes.
 
+read and update becomes faster.....
+
+insert and delete becomes slower....
+
+multiple table insertinon and deletion is required.
+
 ```sql
 Exec sp_helpindex Employees
 ```
@@ -1338,3 +1344,229 @@ To create a user-defined datatype .we use the normal existing datatypes.
 
 ![alt text](image-123.png)
 we can also create user defined datatypes as primarykey.
+
+## Rank
+
+![alt text](image-126.png)
+rank -skip the value
+dense- will not skip any values
+row number-normal numerical values.
+![alt text](image-127.png)
+
+## Difference between group by vs partition by
+
+- group by summarizes the rows. Where as partition by doesnt perform any summarization.It just groups into one category.
+  -Rank needs order by.
+
+## Triggers
+
+![alt text](image-128.png)
+
+- It is all about action and reaction.
+  audit happens.
+- when one table is updated then the related another table should also get inserted.this could be done using triggers.
+- the action can be any type of combination.
+  i.e if we deleted a record from one table
+  ![alt text](image-129.png)
+  inserted , deleted table are default table available in triggers.They r not available outside the triggers
+
+![alt text](image-141.png)
+
+![alt text](image-142.png)
+coz table inserted only works with trrigers.
+
+![alt text](image-143.png)
+Now it works.
+
+![alt text](image-144.png)
+
+## In running total
+
+we have a conflict that is multiple rows have same value i.e ex: 500 500 500 then their running total will be totally added and is updated into 3 tuples like 1500,1500,1500 but we need 500,1000,1500 .
+
+- so to handle this situations we use unbounded preceding
+
+-syntax: over(order by sales_amount rows unbounded preceding and current row )
+
+```sql
+SELECT
+    region,
+    product_type,
+    sales_amount
+from sales_data
+
+SELECT
+    region,
+    product_type,
+    sales_amount,
+    Sum(sales_amount) OVER (ORDER by sales_amount)
+from sales_data
+
+
+
+SELECT
+    region,
+    product_type,
+    sales_amount,
+    Sum(sales_amount) OVER (ORDER by sales_amount) as Running_Total,
+    Avg(sales_amount) OVER (ORDER by sales_amount)  as Running_Avg,
+    Count(sales_amount) OVER (ORDER by sales_amount) as Running_Count
+from sales_data
+
+
+Select *
+from sales_data
+
+-- Starting of the table to current row
+-- Problem: Same values in sales_amount
+SELECT
+    region,
+    product_type,
+    sales_amount,
+    Sum(sales_amount) OVER (ORDER by sales_amount) as Running_Total,
+    Avg(sales_amount) OVER (ORDER by sales_amount)  as Running_Avg,
+    Count(sales_amount) OVER (ORDER by sales_amount) as Running_Count
+from sales_data;
+
+
+
+
+
+SELECT
+    region,
+    product_type,
+    sales_amount,
+    Sum(sales_amount) OVER (ORDER by sales_amount) as Old_Running_Total,
+    Sum(sales_amount) OVER (ORDER by sales_amount ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as New_Running_Total,
+    Avg(sales_amount) OVER (ORDER by sales_amount ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)  as Running_Avg,
+    Count(sales_amount) OVER (ORDER by sales_amount ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as Running_Count
+from sales_data;
+
+
+SELECT
+    region,
+    product_type,
+    sales_amount,
+    Sum(sales_amount) OVER (ORDER by sales_amount) as Old_Running_Total,
+    -- 1 row before and 1 row after
+    Sum(sales_amount) OVER (ORDER by sales_amount ROWS BETWEEN 1 PRECEDING AND 1 following) as New_Running_Total,
+    Avg(sales_amount) OVER (ORDER by sales_amount ROWS BETWEEN 1 PRECEDING AND 1 following)  as Running_Avg,
+    Count(sales_amount) OVER (ORDER by sales_amount ROWS BETWEEN 1 PRECEDING AND 1 following) as Running_Count
+from sales_data;
+
+
+
+-- Unbounded PRECEDING -- starting of partition | Unbounded following -- ending of partition
+SELECT
+    region,
+    product_type,
+    sales_amount,
+    Sum(sales_amount) OVER (PARTITION By region  ORDER by sales_amount ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as Running_Total,
+    Avg(sales_amount) OVER (PARTITION By region  ORDER by sales_amount ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)  as Running_Avg,
+    Count(sales_amount) OVER (PARTITION By region  ORDER by sales_amount ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as Running_Count
+from sales_data;
+
+SELECT
+    region,
+    product_type,
+    sales_amount,
+    Sum(sales_amount) OVER (  ORDER by sales_amount ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED following) as Running_Total,
+    Avg(sales_amount) OVER (  ORDER by sales_amount ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED following)  as Running_Avg,
+    Count(sales_amount) OVER (  ORDER by sales_amount ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED following) as Running_Count
+from sales_data;
+
+
+
+SELECT
+    region,
+    product_type,
+    sales_amount,
+    Sum(sales_amount) OVER (PARTITION by region  ORDER by sales_amount ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED following) as Running_Total,
+    Avg(sales_amount) OVER (PARTITION by region   ORDER by sales_amount ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED following)  as Running_Avg,
+    Count(sales_amount) OVER (PARTITION by region   ORDER by sales_amount ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED following) as Running_Count
+from sales_data;
+
+
+
+```
+
+# JSON
+
+```sql
+go
+DECLARE @jsonData NVARCHAR(MAX)
+SET @jsonData = N'{
+    "Books": [
+        {"Title": "SQL Essentials", "Author": "John Doe"},
+        {"Title": "Learning XML", "Author": "Jane Smith"}
+    ],
+    "sales": 4000
+}'
+
+SELECT Title, Author
+FROM OPENJSON(@jsonData, '$.Books')
+WITH (
+    Title NVARCHAR(100),
+    Author NVARCHAR(100)
+)
+ ---------
+
+DECLARE @jsonData NVARCHAR(MAX)
+SET @jsonData = N'{
+    "Books": [
+        {"id": "12345", "Details": {"Title": "SQL Essentials", "Author": "John Doe"}},
+        {"id": "67890", "Details": {"Title": "Learning XML", "Author": "Jane Smith"}}
+    ]
+}'
+
+
+SELECT id, Title, Author
+FROM OPENJSON(@jsonData, '$.Books')
+WITH (
+    id NVARCHAR(5),
+    Title NVARCHAR(100) '$.Details.Title',
+    Author NVARCHAR(100) '$.Details.Author'
+)
+
+
+-- JSON_VALUE -- return scalar values
+DECLARE @jsonData NVARCHAR(MAX) = N'{"name": "John", "age": 30}'
+
+SELECT JSON_VALUE(@jsonData, '$.name') AS Name,
+    JSON_VALUE(@jsonData, '$.age') AS Age;
+
+
+
+
+
+
+DECLARE @jsonData NVARCHAR(MAX) = N'{
+    "employee": {"name": "John", "skills": ["SQL", "C#", "Azure"]}
+}'
+SELECT JSON_QUERY(@jsonData, '$.employee.skills') AS Skills;
+
+
+-- JSON_Value - Scalar   && JSON_Query - non-scalar (Object & arrays)
+
+```
+
+![alt text](image-145.png)
+json info into table using "OpenJson"
+
+![alt text](image-146.png)
+to go and check the values more deeper. we use using '.'
+
+It will only works for scalar values
+![alt text](image-147.png)
+From the above, instead of writting the middle one we can replace it with the bottom one which is more easy and efficent.
+
+![alt text](image-148.png)
+
+data type we use for the json representation is : Nvarchar(max)
+
+- IsJSON is a method used to check / validate the json formatted data.
+- It returns the boolean value.
+
+- if it is valid json it returns 1 ...if not 0.
+
+- JSON_Modify creates a new copy ...
