@@ -3,17 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- <link rel="stylesheet" href="basic.css"> -->
+    <link rel="stylesheet" href="basic.css" />
     <title>Document</title>
     <style>
       body {
         font-family: "Times New Roman", Times, serif;
-        background-image: linear-gradient(#feac5e, #c779d0, #4bc0c8);
+        background-image: linear-gradient(to right, #feac5e, #c779d0, #4bc0c8);
         background-repeat: no-repeat;
-        background-position: center;
+        background-position: center; /*concentrates on the zooming position*/
         object-fit: cover;
         background-attachment: fixed;
-        background-size: 100% 100%;
+        background-size: cover; /*if we adjust the container size automatically it zooms in */
       }
       marquee {
         color: bisque;
@@ -36,13 +36,44 @@
         background-color: beige;
         object-fit: contain;
       }
+      h1 {
+        font-family: "Dancing Script", cursive;
+        font-optical-sizing: auto;
+        font-weight: 300;
+        font-style: normal;
+      }
+      h1 {
+        border: 1px solid blue;
+        border-style: groove;
+        border-radius: 5px;
+        border-left-width: 30px;
+        width: 170px;
+      }
     </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body class="eaz">
-    <marquee>WELCOME!!!!!!!!!</marquee>
-    <h1 style="color: beige">Landscape</h1>
+    <marquee>Look down 👀😉</marquee>
+    <h1 style="color: #f5f5dc">Landscape</h1>
     <img class="proc" src="download.jfif" ,alt="😑" />
     <h2 style="color: aliceblue">Tejaswini</h2>
+    <h1>Helloo to all!!!</h1>
+    <script>
+      var student = {
+        name: "teja",
+        age: 20,
+        company: "Proclink",
+      };
+      console.log(student.name);
+      console.log(student["age"]);
+      var t = null;
+      console.log(typeof t);
+    </script>
     <a href="https://www.learnerslive.tech/">Lets learn together</a>
     <h3><em>This is a useful Website.</em></h3>
   </body>
