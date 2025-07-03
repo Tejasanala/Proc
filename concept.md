@@ -1,5 +1,6 @@
 list has default padding
-border doesnt inherit the parent qualities.the border applied to parent doesnt effect the children.
+border,padding,margin doesnt inherit the parent qualities.the border applied to parent doesnt effect the children.
+
 ctrl+shift+p -->gets emmet we need to put wrap.
 
 - the paragraph tag uses a block display so they prints in new lines.Whereas the anchor tag (a) are inline so.. everything come in the same line.
